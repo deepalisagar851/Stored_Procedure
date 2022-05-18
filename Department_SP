@@ -1,0 +1,51 @@
+create database mvc_ado
+use  mvc_ado
+
+ Create Table Department  
+(  
+  Id Int Primary Key Identity,  
+   Name varchar(50)
+)
+ Create Table Employees  
+(  
+  Id Int Primary Key Identity,  
+   Name varchar(30),
+   Email varchar(100),
+   Mobile varchar(10),
+   IsActive bit,
+   Department Int Foreign Key references Department(Id)
+) 
+
+sp_department1 'select'
+sp_department1 'create',0,'Management'
+sp_department1 'select_one',1
+
+
+create proc sp_department1
+@action varchar(20),
+@id int=0,
+@name varchar(100)=null
+as 
+begin
+if @action='create'
+
+begin 
+insert into Department(Name)Values(@name)
+end
+else if  @action='select'
+begin 
+select*from Department
+end
+else if  @action='delete'
+begin 
+delete from Department where Id=@id
+end
+else if  @action='update'
+begin 
+update  Department set Name=@name where Id=@id
+end
+else if  @action='select_one'
+begin 
+select*from Department where Id=@id
+end
+end
