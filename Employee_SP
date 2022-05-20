@@ -1,0 +1,71 @@
+
+create proc SP_Employees1
+@action varchar(20),
+@Id int=0,
+@Name varchar(30),
+@Email varchar(100),
+@Mobile varchar(10),
+@Gender varchar(10),
+@IsActive bit,
+@Department int
+as 
+begin
+if @action='create'
+
+begin 
+if NOT EXISTS(select 1 from Employees where Email=@Email)
+begin
+insert into Employees(Name,Email,Mobile,Gender,IsActive,Department)Values(@Name,@Email,@Mobile,@Gender,@IsActive,@Department)
+end
+
+else
+begin
+select 'Email already Exist' as result
+end
+end
+
+else if  @action='Select'
+begin 
+select e.Id,
+e.Name,
+e.Email,
+e.Mobile,
+e.Gender,
+e.IsActive,
+d.Name Department
+from Employees e 
+inner join
+ Department d
+ on e.Id=d.Id
+end
+
+else if  @action='delete'
+begin 
+delete from Employees where Id=@Id
+end
+else if  @action='update'
+begin 
+update  Employees set Name=IsNull(@Name,Name),
+Email=IsNull(@Email,Email),
+Mobile=IsNull(@Mobile,Mobile),
+Gender=IsNull(@Gender,Gender),
+IsActive=IsNull(@IsActive,IsActive),
+Department=IsNull(@Department,Department) 
+where Id=@Id
+end
+else if  @action='select_one'
+begin 
+select e.Id,
+e.Name,
+e.Email,
+e.Mobile,
+e.Gender,
+e.IsActive,
+d.Name Department
+from Employees e 
+inner join
+ Department d
+ on e.Id=d.Id
+end
+end
+
